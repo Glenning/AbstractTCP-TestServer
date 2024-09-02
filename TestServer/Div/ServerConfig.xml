@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ServerConfig>
+	<ServerPort>7007</ServerPort>
+	<ShutDownPort>7008</ShutDownPort>
+	<ServerName>Default Server</ServerName>
+	<DebugLevel></DebugLevel>
+</ServerConfig>
