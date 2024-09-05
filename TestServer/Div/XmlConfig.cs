@@ -14,19 +14,17 @@ namespace TestServer.Div
             XmlDocument configDoc = new XmlDocument();
             configDoc.Load(filename);
 
-            XmlNode portNode = //portNode is the name of the node in this C# file, placeholder name would be xxNode
-                configDoc.DocumentElement.SelectSingleNode("<ServerPort");
-            if (portNode != null ) //Standard for an int
+            XmlNode portNode = configDoc.DocumentElement.SelectSingleNode("port"); //portNode is the name of the node in this C# file, placeholder name would be xxNode
+            if (portNode != null) //Standard for an int
             {
-                string portStr = portNode.InnerText.Trim();
+                String portStr = portNode.InnerText.Trim();
                 int port = Convert.ToInt32(portStr);
             }
 
-            XmlNode nameNode =
-                configDoc.DocumentElement.SelectSingleNode("<ServerName>");
-            if (nameNode != null ) //Standard for a str
+            XmlNode nameNode = configDoc.DocumentElement.SelectSingleNode ("name");
+            if (nameNode != null) //Standard for a str
             {
-                string name = nameNode.InnerText.Trim();
+                String name = nameNode.InnerText.Trim();
             }
         }
     }

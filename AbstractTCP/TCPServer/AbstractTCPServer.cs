@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace AbstractTCP.TCPServer
 {
@@ -24,6 +25,8 @@ namespace AbstractTCP.TCPServer
         /// </summary>
         /// <param name="port">The port number</param>
         /// <param name="name">The server name</param>
+        protected ServerConfig Config { get; private set; } = ServerConfig.Instance;
+        
         public AbstractTCPServer(int port, string name) : this(port, port + 1, name)
         {
 
@@ -31,9 +34,39 @@ namespace AbstractTCP.TCPServer
 
         public AbstractTCPServer(int port, int stopport, string name)
         {
-            PORT = port;
-            STOPPORT = stopport;
-            NAME = name;
+            Config.ServerPort = port;
+            Config.ShutDownPort = stopport;
+            Config.ServerName = name;
+        }
+        public AbstractTCPServer(String filename = "ServerConfig.xml")
+        {
+            string configpath = Environment.GetEnvironmentVariable("AbstractServerConfig");
+
+            XmlDocument configDoc = new XmlDocument();
+            configDoc.Load(configpath + filename);
+
+            XmlNode? portNode = configDoc.DocumentElement?.SelectSingleNode("ServerPort");
+            if (portNode != null)
+            {
+                String portStr = portNode.InnerText.Trim();
+                int port = Convert.ToInt32(portStr);
+                Config.ServerPort = port;
+            }
+
+            XmlNode? stopportNode = configDoc.DocumentElement?.SelectSingleNode("StopServerPort");
+            if (stopportNode != null)
+            {
+                String stopportStr = stopportNode.InnerText.Trim();
+                int stopport = Convert.ToInt32(stopportStr);
+                Config.ShutDownPort = stopport;
+            }
+
+            XmlNode? nameNode = configDoc?.DocumentElement?.SelectSingleNode("ServerName");
+            if (nameNode != null)
+            {
+                String name = nameNode.InnerText.Trim();
+                Config.ServerName = name;
+            }
         }
         /// <summary>
         /// Initializes both the server and the stop server
